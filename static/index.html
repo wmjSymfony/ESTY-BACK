@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>临时页面</title>
+</head>
+<body>
+    <label>请输入商品listingId，并以逗号隔开</label>
+    <br/>
+    <textarea id="listing-content" style="width: 500px;height: 300px;font-size: 20px"></textarea>
+    <br/>
+    <button onclick="getListings()">查询并存储数据</button>
+    <br/>
+    <div id="text" style="color: red"></div>
+    <div style="display: none!important;" id="listing-html"></div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="./index.js"></script>
+</body>
+</html>
