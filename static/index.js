@@ -1,9 +1,13 @@
 var listingidsTemp = [];
 var listingids = [];
 var listingsSales = {};//以上listing的加购数量 和 售卖数量
+var ip = document.domain;
+var port = location.port.length > 0 ? location.port : '80';
 
 //并发爬取多个listing
 async function getListings(){
+    $("#text").text("");
+
     // 准备一个列队存放请求
     let queue = [];
 
@@ -24,7 +28,7 @@ async function getListings(){
                 console.log(e);
             }
         }else{
-            listingids.splice(listingids.indexOf(listingids[i]), 1);//返回值不为200，表示请求错误，删除这个id。
+            listingids.splice(listingids.indexOf(listingids[i]), 1);//返回值不为200，表示请求错误，删除这个id
             return;
         }
     }
@@ -38,7 +42,7 @@ async function getListings(){
 async function getSalenumHtml(listingid){
     return new Promise(function (resolve, reject) {
         fetch(
-            'http://127.0.0.1:3001/gethtml?id=' + listingid).then(res => {
+            'http://'+ip+':3001/gethtml?id=' + listingid).then(res => {
             resolve(res);
         }).catch(e => {
             reject(e);
@@ -50,7 +54,7 @@ async function getSalenumHtml(listingid){
 async function loadHtml(i){
     return new Promise((resolve,reject) => {
         try{
-            $("#listing-html").load('http://127.0.0.1:3000/listing_'+listingidsTemp[i]+'.html',function (){
+            $("#listing-html").load('http://'+ip+':'+port+'/listing_'+listingidsTemp[i]+'.html',function (){
                 getSalenum(listingidsTemp[i]);
                 resolve();
             }).prop('async', false);
@@ -231,7 +235,7 @@ function isNumber(num) {
 //给服务端发送数据
 function saveData() {
     return new Promise(function (resolve, reject) {
-        fetch('http://127.0.0.1:3001/gethtml/saveListingHtmlData',{
+        fetch('http://'+ip+':3001/gethtml/saveListingHtmlData',{
             method: 'post',
             body: JSON.stringify({
                 id: listingids,
