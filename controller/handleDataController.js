@@ -19,10 +19,12 @@ async function DB() {
 //listingids 经过校验真实存在的listing数组。
 var listingids;
 var listingsSales = {};//以上listing的加购数量  和  售卖数量等其他爬取数据
+var date_time;//插入数据默认插入当前时间戳
 
 async function handleDataController(request){
     listingids = JSON.parse(JSON.stringify(request.id));
     listingsSales = JSON.parse(JSON.stringify(request.sales));
+    date_time = new Date().getTime();
     if(listingids.length == 0){
         return {status:200,data:'no invaild id'};
     }
@@ -143,6 +145,7 @@ async function insertListing(result,reviews_nums,rating_values){
                 isReturnNull(nowData.last_modified_timestamp),//int
 
                 listingsSales[nowData['listing_id']] && listingsSales[nowData['listing_id']]['skus'] ?  isReturnNull(listingsSales[nowData['listing_id']]['skus']) : null,//'video',
+                date_time
             ]);
         }
     }
@@ -162,7 +165,7 @@ async function insertListing(result,reviews_nums,rating_values){
         sales_num,view_num_30d,favorites_num_30d,
         reviews_num_30d,rating_value_30d,sales_num_30d,
         pc1,video,modified_time,
-        sku
+        sku,date_time
         )  VALUES ?  `;
         // try {
             const [rows, fields] = await connectionpromise.query(stmt, [insertData]);
@@ -204,7 +207,8 @@ async function insertListingData(result,reviews_nums,rating_values) {
                 null,//'rating_value_30d',
                 null,//'sales_num_30d',
 
-                isReturnNull(nowData.last_modified_timestamp)//int
+                isReturnNull(nowData.last_modified_timestamp),//int
+                date_time
             ]);
         }
     }
@@ -215,7 +219,7 @@ async function insertListingData(result,reviews_nums,rating_values) {
         rating_value,in_carts_num,sales_num_1d,
         sales_num,view_num_30d,favorites_num_30d,
         reviews_num_30d,rating_value_30d,sales_num_30d,
-        modified_time
+        modified_time,date_time
         )  VALUES ?  `;
         // try {
             const [rows, fields] = await connectionpromise.query(stmt, [insertData]);
@@ -254,13 +258,14 @@ async function insertReviews(data) {
                 isReturnNull(nowData['created_timestamp']),//int
                 isReturnNull(nowData['updated_timestamp']),//int
                 nowData['image_url_fullxfull'] || null,//string nullable
+                date_time
             ]);
         }
     }
 
     //查询数据的修改时间 大于 库中的最晚修改时间  再去插入
     if(insertData.length > 0){
-        let stmt = `INSERT INTO product_comment(listing_id,shop_id,rating,content,audit_time,modified_time,pc1)  VALUES ?  `;
+        let stmt = `INSERT INTO product_comment(listing_id,shop_id,rating,content,audit_time,modified_time,pc1,date_time)  VALUES ?  `;
         const [rows, fields] = await connectionpromise.query(stmt, [insertData]);
         console.log('reviews Row inserted:' + rows.affectedRows);
         return {status:200};
