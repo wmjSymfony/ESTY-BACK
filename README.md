@@ -1,5 +1,5 @@
 ## 部署前需要修改三个地方：
-#### 1）controller/handleDataController.js中的数据库密码 从123456 修改为服务器数据库密码
+#### 1）config/config.js中的数据库密码 从123456 修改为服务器数据库密码
 #### 2）server.js的端口号3000 改为 80
 #### 3）backserver.js中的ip改为 http://xx.xx.xx.xx
 
@@ -11,6 +11,7 @@
 #####    htmlcontroller爬取html，存储html，删除html
 #####    listingController接口请求listing 和 reviews
 #####    handledataController处理数据，操作数据，存储listing和reviews
+#####    exceldatacontroller查询数据，生成excel
 #### 3）router 路由    
 #### 4）backserver.js 后端服务开启
 #### 5）server.js 前端服务开启

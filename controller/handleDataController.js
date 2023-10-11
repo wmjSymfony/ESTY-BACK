@@ -1,6 +1,7 @@
 //引入mysql
 const mysqlpromise = require("mysql2/promise");
 var {listingsController,reviewsController} = require('./listingController');
+const config = require("../config/config");
 var {deleteHtml} = require('./htmlController');
 var connectionpromise,pool;
 async function DB() {
@@ -8,7 +9,7 @@ async function DB() {
         host: 'localhost', //数据库地址
         port: '3306',//端口号
         user: 'root',//用户名
-        password: '123456',//密码
+        password: config.password,//密码
         database: 'esty',//数据库名称
         waitForConnections: true,
         connectionLimit: 10,

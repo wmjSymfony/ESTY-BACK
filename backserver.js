@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var {listing,shop,gethtml} = require('./router/router');
+var {listing,shop,gethtml,excel} = require('./router/router');
 
 app.all("*",function(req,res,next){
     var ip = 'http://127.0.0.1:3000';
@@ -18,6 +18,7 @@ app.all("*",function(req,res,next){
 app.use('/listings',listing);
 app.use('/shop',shop);
 app.use('/gethtml',gethtml);
+app.use('/excel',excel);
 
 app.listen(3001, () => {
     console.log('backserver is up and running in 3001')

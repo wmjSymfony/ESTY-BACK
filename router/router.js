@@ -2,9 +2,11 @@ var express = require('express');
 var listing = express.Router();
 var shop = express.Router();
 var gethtml = express.Router();
+var excel = express.Router();
 var {listingsController,reviewsController} = require('../controller/listingController');
 var {htmlController} = require('../controller/htmlController');
 var {handleDataController} = require('../controller/handleDataController');
+var {excelDataController} = require('../controller/excelDataController');
 const url = require('url');
 const bodyParser = require('body-parser');
 
@@ -42,4 +44,13 @@ gethtml.post('/saveListingHtmlData',async function (req,res) {
     }
 })
 
-module.exports = {listing,shop,gethtml};
+excel.get('/',async function (req,res) {
+    const queryObject = url.parse(req.url,true).query;
+    let count = queryObject.count;
+    let id = queryObject.id;
+    let listingids = queryObject.listingids;
+    let data = await excelDataController(count,id,listingids);
+    res.send(data);
+})
+
+module.exports = {listing,shop,gethtml,excel};

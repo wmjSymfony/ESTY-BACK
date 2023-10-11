@@ -23,6 +23,7 @@
     "mysql2": "^3.6.1",
     "mysql2-promise": "^0.1.4",
     "node-fetch": "^2.7.0",
+    "node-xlsx": "^0.23.0",
     "path": "^0.12.7",
     "puppeteer": "^21.3.4",
     "request": "^2.88.2",
